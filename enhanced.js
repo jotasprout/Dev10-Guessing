@@ -6,9 +6,11 @@ function log_maxNumber(maxNum) {
 
 function get_MaxNumber() {
     let valid_input = false;
+
+    input = window.prompt("Enter the maximum number.");
     
     while(!valid_input) {
-        input = window.prompt("Enter the maximum number.");
+        // input = window.prompt("Enter the maximum number.");
         maxNumber = Number(input);
 /**/
         if(Math.sign(maxNumber) < 1) {
@@ -38,14 +40,13 @@ get_MaxNumber();
 let userMaxDisplay = document.getElementById("tellUserMax");
 
 /* 
-
 */
 
 function guess_Number() {
     let valid_input = false;
     
     while(!valid_input) {
-        input = window.prompt("Enter the maximum number.");
+        input = window.prompt("Eat boogers.");
         maxNumber = Number(input);
 /**/
         if(Math.sign(maxNumber) < 1) {
@@ -69,5 +70,3 @@ function guess_Number() {
     log_maxNumber(maxNumber);
     tellUserMax.innerHTML = `Choose a number between 1 and ${maxNumber}.`;
 }
-
-guess_Number();

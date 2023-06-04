@@ -32,14 +32,14 @@ function get_MaxNumber() {
     }
 
     // if maxNumber is valid
-    //return maxNumber;
     log_maxNumber(maxNumber);
-    tellUserMax.innerHTML = `Choose a number between 1 and ${maxNumber}.`;
+    let userMaxDisplay = document.getElementById("tellUserMax");
+    userMaxDisplay.innerHTML = `Choose a number between 1 and ${maxNumber}.`;
 }
 
 get_MaxNumber();
 
-let userMaxDisplay = document.getElementById("tellUserMax");
+
 
 /* 
 val = Math.floor(Math.random() * 20) + 1;
@@ -58,35 +58,67 @@ function genRandNum(maxNumber){
 genRandNum(maxNumber);
 let userGuess;
 
-function examineGuess() {
-    let valid_input = false;
+let feedback = document.getElementById("guessValidationResponse");
 
-    let userGuess = Number(document.getElementById("userGuess").value);
+feedback.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      document.getElementById("guessing").click();
+    }
+  });
+
+let guessArray = [];
+let guessArrayLength;
+
+function validateGuess() {
+    //let valid_input = false;
+    console.log(`max number is ${maxNumber}`);
+    userGuess = Number(document.getElementById("userGuess").value);
     console.log(`User entered ${userGuess}`);
     
-    while(!valid_input) {
-     
-/**/
-        if(Math.sign(maxNumber) < 1) {
-            input = window.prompt("That is not a positive number. Enter a maximum number greater than 1.");
-            maxNumber = Number(input);
-        }
-
-        else if(isNaN(maxNumber)) {
-            input = window.prompt("That is not a number. Enter a maximum number greater than 1.");
-            maxNumber = Number(input);
-        }
-    
-        else if(maxNumber != NaN && maxNumber > 0) {
-            valid_input = true;
-        }
+    if (Math.sign(userGuess) > maxNumber) {
+        feedback.innerHTML = "That number is not within range.";
+        console.log(`User guessed ${userGuess} which is higher than maxNum ${maxNumber}`);
+        userGuess = Number(document.getElementById("userGuess").value);
     }
 
-    // if maxNumber is valid
+    else if(Math.sign(userGuess) < 1) {
+        feedback.innerHTML = "That number is not within range.";
+        userGuess = Number(document.getElementById("userGuess").value);
+    }
+/**/
+    else if(isNaN(userGuess)) {
+        feedback.innerHTML = "That is not a number. Enter a number.";
+        userGuess = Number(document.getElementById("userGuess").value);
+    }
 
-    //return maxNumber;
-    log_maxNumber(maxNumber);
-    tellUserMax.innerHTML = `Choose a number between 1 and ${maxNumber}.`;
+    else {
+        gradeGuess(userGuess);
+    }
+
 }
 
-examineGuess();
+function gradeGuess(userGuess) {
+    if(userGuess == randNum){
+        guessArray.push(userGuess);
+        guessArrayLength = guessArray.length;
+        let arrayString = guessArray.join(", ");
+        feedback.innerHTML = `You got it! It took you ${guessArrayLength} tries and your guesses were ${arrayString}.`;
+    }
+    else if (userGuess > randNum) {
+        feedback.innerHTML = "No, try a lower number.";
+        guessArray.push(userGuess);
+        console.log(guessArray);
+        guessArrayLength = guessArray.length;
+        console.log(`User has guessed ${guessArrayLength} times.`);
+        userGuess = Number(document.getElementById("userGuess").value);
+    }
+    else {
+        feedback.innerHTML = "No, try a higher number.";
+        guessArray.push(userGuess);
+        console.log(guessArray);
+        guessArrayLength = guessArray.length;
+        console.log(`User has guessed ${guessArrayLength} times.`);
+        userGuess = Number(document.getElementById("userGuess").value);
+    }
+}
